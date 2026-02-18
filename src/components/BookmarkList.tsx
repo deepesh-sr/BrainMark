@@ -65,11 +65,11 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
   }, [userEmail])
 
   return (
-    <div className="mt-12">
-      <h2 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-6">
-        Stored Bookmark
+    <div className="mt-8 md:mt-12">
+      <h2 className="text-gray-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4 md:mb-6">
+        Stored Nectar
       </h2>
-      <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} className="space-y-4 p-0 list-none">
+      <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} className="space-y-3 md:space-y-4 p-0 list-none">
         <AnimatePresence>
           {bookmarks.map((bookmark) => (
             <Reorder.Item 
@@ -78,31 +78,31 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98 }}
-              className="bg-white border border-gray-100 p-5 rounded-xl flex justify-between items-center cursor-grab shadow-sm md:shadow-none md:hover:shadow-md transition-shadow group relative overflow-hidden"
+              className="bg-white border border-gray-100 p-4 md:p-5 rounded-xl flex justify-between items-center cursor-grab shadow-sm md:shadow-none md:hover:shadow-md transition-shadow group relative overflow-hidden"
               whileDrag={{ scale: 1.01, boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}
             >
-              <div className="flex items-center gap-6 flex-1">
-                <GripVertical size={20} className="text-gray-200 group-hover:text-honey transition-colors" />
-                <div className="flex flex-col">
-                  <span className="font-semibold text-gray-800 text-lg">{bookmark.title}</span>
-                  <span className="text-xs text-gray-400 font-mono truncate max-w-sm">{new URL(bookmark.url).hostname}</span>
+              <div className="flex items-center gap-3 md:gap-6 flex-1 min-w-0">
+                <GripVertical size={18} className="text-gray-200 group-hover:text-honey transition-colors shrink-0" />
+                <div className="flex flex-col min-w-0">
+                  <span className="font-semibold text-gray-800 text-sm md:text-lg truncate">{bookmark.title}</span>
+                  <span className="text-[10px] md:text-xs text-gray-400 font-mono truncate">{new URL(bookmark.url).hostname}</span>
                 </div>
               </div>
               
-              <div className="flex gap-6 items-center">
+              <div className="flex gap-4 md:gap-6 items-center shrink-0 ml-2">
                 <a 
                   href={bookmark.url} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-gray-400 flex items-center gap-1.5 no-underline text-sm font-semibold hover:text-honey transition-colors"
+                  className="text-gray-400 flex items-center gap-1 md:gap-1.5 no-underline text-[10px] md:text-sm font-semibold hover:text-honey transition-colors"
                 >
-                  Visit <ExternalLink size={16} />
+                  <span className="hidden xs:inline">Visit</span> <ExternalLink size={14} className="md:w-4 md:h-4" />
                 </a>
                 <button 
                   onClick={() => deleteBookmark(bookmark.id)} 
                   className="bg-transparent border-none text-gray-200 cursor-pointer p-1 flex items-center hover:text-red-500 transition-colors"
                 >
-                  <Trash2 size={20} />
+                  <Trash2 size={16} className="md:w-5 md:h-5" />
                 </button>
               </div>
             </Reorder.Item>

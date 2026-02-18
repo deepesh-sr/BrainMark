@@ -65,9 +65,9 @@ export default function Page() {
         </div>
       ) : (
         <div className="flex flex-col min-h-screen">
-          <nav className="flex justify-between items-center py-4 px-8 md:px-20 bg-white border-b border-gray-100 sticky top-0 z-100">
-            <div className="flex items-center gap-16">
-              <h2 style={{ fontFamily: "'Pacifico', cursive" }} className="text-2xl text-honey-dark m-0 select-none">
+          <nav className="flex justify-between items-center py-4 px-4 md:px-20 bg-white border-b border-gray-100 sticky top-0 z-100">
+            <div className="flex items-center gap-4 md:gap-16">
+              <h2 style={{ fontFamily: "'Pacifico', cursive" }} className="text-xl md:text-2xl text-honey-dark m-0 select-none">
                 BrainMark
               </h2>
 
@@ -81,19 +81,19 @@ export default function Page() {
               </a>
             </div>
 
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4 md:gap-8">
               <button 
                 onClick={() => signOut()}
-                className="bg-gray-50 border border-gray-100 text-gray-600 py-2.5 px-6 rounded-full cursor-pointer text-xs flex items-center gap-2 font-bold uppercase tracking-wider hover:bg-honey hover:text-bee-black hover:border-honey transition-all shadow-sm"
+                className="bg-gray-50 border border-gray-100 text-gray-600 py-2 md:py-2.5 px-4 md:px-6 rounded-full cursor-pointer text-[10px] md:text-xs flex items-center gap-2 font-bold uppercase tracking-wider hover:bg-honey hover:text-bee-black hover:border-honey transition-all shadow-sm"
               >
-                <LogOut size={16} /> Sign out
+                <LogOut size={14} className="md:w-4 md:h-4" /> Sign out
               </button>
             </div>
           </nav>
           
-          <main className="flex-1 py-16 px-8 md:px-20 max-w-4xl mx-auto w-full box-border">
+          <main className="flex-1 py-8 md:py-16 px-4 md:px-20 max-w-4xl mx-auto w-full box-border">
             {/* Tab Slider */}
-            <div className="flex bg-white p-1.5 rounded-full border border-gray-100 shadow-sm mb-12 max-w-md mx-auto relative overflow-hidden">
+            <div className="flex bg-white p-1 rounded-full border border-gray-100 shadow-sm mb-8 md:mb-12 max-w-[320px] md:max-w-md mx-auto relative overflow-hidden">
               <motion.div 
                 className="absolute top-1.5 bottom-1.5 bg-honey rounded-full z-0"
                 initial={false}
@@ -105,15 +105,15 @@ export default function Page() {
               />
               <button 
                 onClick={() => setActiveTab("add")}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full text-sm font-bold transition-colors relative z-10 ${activeTab === "add" ? 'text-bee-black' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`flex-1 flex items-center justify-center gap-1.5 md:gap-2 py-2.5 md:py-3 px-4 md:px-6 rounded-full text-[12px] md:text-sm font-bold transition-colors relative z-10 ${activeTab === "add" ? 'text-bee-black' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <Plus size={18} /> Add Bookmark
+                <Plus size={16} className="md:w-4.5 md:h-4.5" /> Add
               </button>
               <button 
                 onClick={() => setActiveTab("view")}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full text-sm font-bold transition-colors relative z-10 ${activeTab === "view" ? 'text-bee-black' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`flex-1 flex items-center justify-center gap-1.5 md:gap-2 py-2.5 md:py-3 px-4 md:px-6 rounded-full text-[12px] md:text-sm font-bold transition-colors relative z-10 ${activeTab === "view" ? 'text-bee-black' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <List size={18} /> View Bookmarks
+                <List size={16} className="md:w-4.5 md:h-4.5" /> View
               </button>
             </div>
 

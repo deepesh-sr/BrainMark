@@ -51,12 +51,12 @@ export default function BookmarkForm() {
       </AnimatePresence>
 
       <motion.div 
-        className="relative z-50 bg-white p-8 rounded-xl border border-gray-100 shadow-sm"
+        className="relative z-50 bg-white p-6 md:p-8 rounded-xl border border-gray-100 shadow-sm"
       >
-        <h3 className="text-hive text-sm font-bold uppercase tracking-wider mb-6 opacity-70">Add New Bookmark</h3>
+        <h3 className="text-hive text-[10px] md:text-sm font-bold uppercase tracking-wider mb-4 md:mb-6 opacity-70">Add New Bookmark</h3>
         <form 
           onSubmit={handleSubmit} 
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-3 md:gap-4"
           onFocus={() => setFocused(true)}
         >
           <input 
@@ -64,7 +64,7 @@ export default function BookmarkForm() {
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
             required 
-            className="p-4 rounded-lg bg-gray-50/50 border border-gray-100 text-bee-black outline-none focus:bg-white focus:border-honey/30 transition-all"
+            className="p-3 md:p-4 rounded-lg bg-gray-50/50 border border-gray-100 text-bee-black outline-none focus:bg-white focus:border-honey/30 transition-all text-sm md:text-base"
           />
           <input 
             placeholder="URL (https://...)" 
@@ -72,12 +72,12 @@ export default function BookmarkForm() {
             type="url"
             onChange={(e) => setUrl(e.target.value)} 
             required 
-            className="p-4 rounded-lg bg-gray-50/50 border border-gray-100 text-bee-black outline-none focus:bg-white focus:border-honey/30 transition-all"
+            className="p-3 md:p-4 rounded-lg bg-gray-50/50 border border-gray-100 text-bee-black outline-none focus:bg-white focus:border-honey/30 transition-all text-sm md:text-base"
           />
           <button 
             type="submit" 
             disabled={isSubmitting}
-            className="p-4 rounded-lg bg-honey text-bee-black font-semibold cursor-pointer flex justify-center items-center gap-2 hover:bg-honey-dark transition-all disabled:opacity-50"
+            className="p-3 md:p-4 rounded-lg bg-honey text-bee-black font-semibold cursor-pointer flex justify-center items-center gap-2 hover:bg-honey-dark transition-all disabled:opacity-50 text-sm md:text-base"
           >
             {isSubmitting ? (
               <div className="flex gap-1">
