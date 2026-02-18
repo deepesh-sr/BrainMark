@@ -67,7 +67,7 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
   return (
     <div className="mt-8 md:mt-12">
       <h2 className="text-gray-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4 md:mb-6">
-        Stored Nectar
+        Stored Bookmark
       </h2>
       <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} className="space-y-3 md:space-y-4 p-0 list-none">
         <AnimatePresence>
