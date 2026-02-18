@@ -50,19 +50,42 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
           filter: `user_email=eq.${userEmail}`
         },
         (payload) => {
+          console.log("Change detected:", payload)
+          
           if (payload.eventType === "INSERT") {
-            setBookmarks((prev) => [payload.new as Bookmark, ...prev])
+            const newBookmark = payload.new as Bookmark
+            // Only add if it's not already in the list to avoid duplicates
+            setBookmarks((prev) => {
+              if (prev.find(b => b.id === newBookmark.id)) return prev;
+              return [newBookmark, ...prev];
+            });
           } else if (payload.eventType === "DELETE") {
             setBookmarks((prev) => prev.filter((b) => b.id !== payload.old.id))
           }
         }
       )
-      .subscribe()
+      .subscribe((status) => {
+        console.log("Realtime status:", status)
+      })
 
     return () => {
+      console.log("Unsubscribing from realtime...")
       supabase.removeChannel(channel)
     }
   }, [userEmail])
+
+  const handleDelete = async (id: string) => {
+    // 1. Optimistic Update (UI updates immediately)
+    setBookmarks((prev) => prev.filter((b) => b.id !== id))
+    
+    try {
+      // 2. Server/Database update
+      await deleteBookmark(id)
+    } catch (error) {
+      console.error("Failed to delete bookmark:", error)
+      // Optional: Re-fetch if deletion failed on server
+    }
+  }
 
   return (
     <div className="mt-8 md:mt-12">
@@ -99,7 +122,7 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
                   <span className="hidden xs:inline">Visit</span> <ExternalLink size={14} className="md:w-4 md:h-4" />
                 </a>
                 <button 
-                  onClick={() => deleteBookmark(bookmark.id)} 
+                  onClick={() => handleDelete(bookmark.id)} 
                   className="bg-transparent border-none text-gray-200 cursor-pointer p-1 flex items-center hover:text-red-500 transition-colors"
                 >
                   <Trash2 size={16} className="md:w-5 md:h-5" />
