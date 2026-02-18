@@ -3,11 +3,13 @@
 import { signIn, signOut, useSession } from "next-auth/react"
 import BookmarkForm from "@/components/BookmarkForm"
 import BookmarkList from "@/components/BookmarkList"
-import { motion } from "framer-motion"
-import { Github, LogOut } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Github, LogOut, Plus, List } from "lucide-react"
+import { useState } from "react"
 
 export default function Page() {
   const { data: session, status } = useSession()
+  const [activeTab, setActiveTab] = useState<"add" | "view">("view")
 
   if (status === "loading") {
     return (
@@ -44,12 +46,12 @@ export default function Page() {
             <h1 className="font-fredericka text-7xl md:text-9xl m-0 text-honey-dark select-none" style={{ textShadow: '4px 4px 0px rgba(255,255,255,0.8)' }}>
               BrainMark
             </h1>
-            <p className="max-w-xl text-xl mt-6 mb-12 text-hive/80 font-medium tracking-tight">
+            <p className="max-w-xl text-xl mt-3 mb-12 text-hive/80 font-light tracking-tight">
               A professional digital hive for your discoveries.
             </p>
             <button
               onClick={() => signIn("google")}
-              className="px-12 py-5 text-lg cursor-pointer bg-white text-bee-black border border-gray-100 rounded-full font-bold shadow-xl hover:-translate-y-1 hover:shadow-2xl transition-all flex items-center gap-4 group"
+              className="px-12 py-5 text-lg cursor-pointer bg-white text-bee-black border border-gray-100 rounded-full font-regular shadow-xl hover:-translate-y-1 hover:shadow-2xl transition-all flex items-center gap-4 group"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -65,14 +67,9 @@ export default function Page() {
         <div className="flex flex-col min-h-screen">
           <nav className="flex justify-between items-center py-4 px-8 md:px-20 bg-white border-b border-gray-100 sticky top-0 z-100">
             <div className="flex items-center gap-16">
-              <motion.h2
-                animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
-                transition={{ duration: 5, repeat: Infinity }}
-                className="bg-linear-to-r from-honey via-gold to-honey bg-size-[200%_100%] bg-clip-text text-transparent font-fredericka text-3xl m-0 select-none"
-                style={{ display: 'inline-block' }}
-              >
+             
                 BrainMark
-              </motion.h2>
+              
 
               <a 
                 href="https://github.com/deepesh-sr/BrainMark" 
@@ -95,9 +92,55 @@ export default function Page() {
           </nav>
           
           <main className="flex-1 py-16 px-8 md:px-20 max-w-4xl mx-auto w-full box-border">
+            {/* Tab Slider */}
+            <div className="flex bg-white p-1.5 rounded-full border border-gray-100 shadow-sm mb-12 max-w-md mx-auto relative overflow-hidden">
+              <motion.div 
+                className="absolute top-1.5 bottom-1.5 bg-honey rounded-full z-0"
+                initial={false}
+                animate={{ 
+                  left: activeTab === "add" ? "1.5px" : "50%",
+                  right: activeTab === "add" ? "50%" : "1.5px",
+                }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+              <button 
+                onClick={() => setActiveTab("add")}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full text-sm font-bold transition-colors relative z-10 ${activeTab === "add" ? 'text-bee-black' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                <Plus size={18} /> Add Bookmark
+              </button>
+              <button 
+                onClick={() => setActiveTab("view")}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full text-sm font-bold transition-colors relative z-10 ${activeTab === "view" ? 'text-bee-black' : 'text-gray-400 hover:text-gray-600'}`}
+              >
+                <List size={18} /> Your Bookmarks
+              </button>
+            </div>
+
             <div className="flex flex-col gap-10">
-              <BookmarkForm />
-              <BookmarkList userEmail={session.user?.email || ""} />
+              <AnimatePresence mode="wait">
+                {activeTab === "add" ? (
+                  <motion.div
+                    key="add"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <BookmarkForm />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="view"
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <BookmarkList userEmail={session.user?.email || ""} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </main>
         </div>
