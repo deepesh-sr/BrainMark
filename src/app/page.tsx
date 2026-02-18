@@ -4,18 +4,19 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import BookmarkForm from "@/components/BookmarkForm"
 import BookmarkList from "@/components/BookmarkList"
 import { motion } from "framer-motion"
+import { Github, LogOut } from "lucide-react"
 
 export default function Page() {
   const { data: session, status } = useSession()
 
   if (status === "loading") {
     return (
-      <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
-        <div style={{ display: 'flex', gap: '8px' }}>
+      <div className="h-screen flex justify-center items-center bg-wax">
+        <div className="flex gap-2">
           {[0, 1, 2].map((i) => (
             <motion.div
               key={i}
-              style={{ width: '12px', height: '12px', backgroundColor: '#fab005', borderRadius: '50%' }}
+              className="w-3 h-3 bg-honey rounded-full"
               animate={{ y: [0, -15, 0] }}
               transition={{ repeat: Infinity, duration: 0.6, delay: i * 0.2 }}
             />
@@ -26,85 +27,72 @@ export default function Page() {
   }
  
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#000', color: '#fab005' }}>
+    <div className="min-h-screen bg-wax text-bee-black">
       {!session ? (
-        <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+        <div className="relative h-screen overflow-hidden">
           <video 
             autoPlay 
             muted 
             loop 
-            style={{ 
-              position: 'absolute', 
-              top: '50%', 
-              left: '50%', 
-              transform: 'translate(-50%, -50%)', 
-              minWidth: '100%', 
-              minHeight: '100%',
-              objectFit: 'cover',
-              zIndex: 0,
-              opacity: 0.4
-            }}
+            playsInline
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full object-cover z-0 opacity-20"
           >
             <source src="https://cdn.pixabay.com/video/2016/09/14/5248-183786781_large.mp4" type="video/mp4" />
           </video>
           
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center', padding: '0 20px' }}>
-            <h1 style={{ fontFamily: "'Fredericka the Great', serif", fontSize: '4rem', margin: 0, color: '#fab005' }}>
+          <div className="relative z-10 flex flex-col justify-center items-center h-screen text-center px-5">
+            <h1 className="font-fredericka text-7xl md:text-8xl m-0 text-honey-dark drop-shadow-[2px_2px_0px_rgba(255,255,255,1)]">
               BrainMark
             </h1>
-            <p style={{ maxWidth: '500px', fontSize: '1.1rem', marginBottom: '2rem', color: '#eee' }}>
-              Your digital hive for storing precious nectar.
+            <p className="max-w-xl text-xl mt-4 mb-10 text-hive font-light">
+              A sweet place for your digital discoveries.
             </p>
             <button
               onClick={() => signIn("google")}
-              style={{ 
-                padding: '16px 32px', 
-                fontSize: '1rem', 
-                cursor: 'pointer', 
-                backgroundColor: '#fab005', 
-                color: '#000', 
-                border: 'none', 
-                borderRadius: '50px', 
-                fontWeight: 'bold',
-                boxShadow: '0 4px 15px rgba(250, 176, 5, 0.4)'
-              }}
+              className="px-10 py-4 text-lg cursor-pointer bg-honey text-bee-black border-none rounded-full font-regular shadow-lg shadow-honey/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-honey/40 transition-all active:translate-y-0"
             >
-              Sign in with Google
+              Signin with Google
             </button>
           </div>
         </div>
       ) : (
-        <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
-          <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-            <motion.h2
-              animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
-              transition={{ duration: 5, repeat: Infinity }}
-              style={{ 
-                background: 'linear-gradient(90deg, #fab005, #ffd43b, #fab005)',
-                backgroundSize: '200% 100%',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontFamily: "'Fredericka the Great', serif",
-                fontSize: '1.8rem',
-                margin: 0
-              }}
-            >
-              BrainMark
-            </motion.h2>
-            <button 
-              onClick={() => signOut()}
-              style={{ background: 'none', border: '1px solid #fab005', color: '#fab005', padding: '6px 16px', borderRadius: '20px', cursor: 'pointer', fontSize: '0.8rem' }}
-            >
-              Fly Out
-            </button>
-          </header>
-          
-          <main>
-            <div style={{ marginBottom: '1rem', opacity: 0.8, fontSize: '0.9rem' }}>
-              Hello, {session.user?.name} 🐝
+        <div className="flex flex-col min-h-screen">
+          <nav className="flex justify-between items-center py-4 px-8 md:px-16 bg-white border-b border-honey-light sticky top-0 z-100">
+            <div className="flex items-center gap-12">
+              <motion.h2
+                animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
+                transition={{ duration: 5, repeat: Infinity }}
+                className="bg-linear-to-r from-honey-dark via-gold to-honey-dark bg-size-[200%_100%] bg-clip-text text-transparent font-fredericka text-3xl m-0"
+              >
+                BrainMark
+              </motion.h2>
+
+              <a 
+                href="https://github.com/deepesh-sr/BrainMark" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hidden md:flex items-center gap-2 text-bee-dark no-underline text-sm font-medium hover:text-honey transition-colors"
+              >
+                <Github size={20} /> Source Code
+              </a>
             </div>
-            <BookmarkForm />
-            <BookmarkList userEmail={session.user?.email || ""} />
+
+            <div className="flex items-center gap-6">
+              <span className="text-sm font-medium text-hive">{session.user?.name} 🐝</span>
+              <button 
+                onClick={() => signOut()}
+                className="bg-wax border border-honey text-bee-black py-2 px-5 rounded-full cursor-pointer text-sm flex items-center gap-2 font-semibold hover:bg-honey-light/20 transition-colors"
+              >
+                <LogOut size={16} /> Fly Out
+              </button>
+            </div>
+          </nav>
+          
+          <main className="flex-1 py-12 px-8 md:px-16 max-w-6xl mx-auto w-full box-border">
+            <div className="flex flex-col gap-8">
+              <BookmarkForm />
+              <BookmarkList userEmail={session.user?.email || ""} />
+            </div>
           </main>
         </div>
       )}

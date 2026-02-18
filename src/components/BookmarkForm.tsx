@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { addBookmark } from "@/actions/bookmarks"
 import { motion, AnimatePresence } from "framer-motion"
+import { Plus } from "lucide-react"
 
 export default function BookmarkForm() {
   const [title, setTitle] = useState("")
@@ -34,70 +35,55 @@ export default function BookmarkForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 z-40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-[2px]"
             onClick={() => setFocused(false)}
-            style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 40 }}
           />
         )}
       </AnimatePresence>
 
-      <div style={{ position: 'relative', zIndex: 50, marginBottom: '2rem' }}>
+      <div className="relative z-50 bg-white p-8 rounded-2xl shadow-sm border border-honey-light">
+        <h3 className="text-hive font-bold mb-6 border-b-2 border-honey inline-block">Build the Hive</h3>
         <form 
           onSubmit={handleSubmit} 
-          style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '12px',
-            backgroundColor: '#111',
-            padding: '20px',
-            borderRadius: '12px',
-            border: '1px solid #fab005'
-          }}
+          className="flex flex-col gap-3"
           onFocus={() => setFocused(true)}
         >
-          <input 
-            placeholder="What's the title?" 
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)} 
-            required 
-            style={{ padding: '12px', borderRadius: '6px', border: '1px solid #333', backgroundColor: '#000', color: '#fab005', outline: 'none' }}
-          />
-          <input 
-            placeholder="Paste URL (https://...)" 
-            value={url} 
-            type="url"
-            onChange={(e) => setUrl(e.target.value)} 
-            required 
-            style={{ padding: '12px', borderRadius: '6px', border: '1px solid #333', backgroundColor: '#000', color: '#fab005', outline: 'none' }}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <input 
+              placeholder="Bookmark Title" 
+              value={title} 
+              onChange={(e) => setTitle(e.target.value)} 
+              required 
+              className="p-3.5 rounded-lg border border-gray-200 bg-gray-50 text-bee-black outline-none focus:border-honey transition-colors"
+            />
+            <input 
+              placeholder="URL (https://...)" 
+              value={url} 
+              type="url"
+              onChange={(e) => setUrl(e.target.value)} 
+              required 
+              className="p-3.5 rounded-lg border border-gray-200 bg-gray-50 text-bee-black outline-none focus:border-honey transition-colors"
+            />
+          </div>
           <button 
             type="submit" 
             disabled={isSubmitting}
-            style={{ 
-              padding: '12px', 
-              borderRadius: '6px', 
-              border: 'none', 
-              backgroundColor: '#fab005', 
-              color: '#000', 
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
+            className="p-3.5 rounded-lg bg-honey text-bee-black font-semibold cursor-pointer flex justify-center items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:hover:scale-100"
           >
             {isSubmitting ? (
-              <div style={{ display: 'flex', gap: '4px' }}>
+              <div className="flex gap-1">
                 {[0, 1, 2].map((i) => (
                   <motion.div
                     key={i}
-                    style={{ width: '6px', height: '6px', backgroundColor: '#000', borderRadius: '50%' }}
+                    className="w-1.5 h-1.5 bg-bee-black rounded-full"
                     animate={{ y: [0, -6, 0] }}
                     transition={{ repeat: Infinity, duration: 0.6, delay: i * 0.2 }}
                   />
                 ))}
               </div>
-            ) : "Save Bookmark"}
+            ) : (
+              <><Plus size={20} /> Add to Hive</>
+            )}
           </button>
         </form>
       </div>

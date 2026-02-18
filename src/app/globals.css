@@ -1,11 +1,25 @@
 @import "tailwindcss";
 
+:root {
+  --color-honey: #FFB800;
+  --color-honey-light: #FFD54F;
+  --color-honey-dark: #F9A825;
+  --color-gold: #D4AF37;
+  --color-gold-light: #F4D03F;
+  --color-gold-dark: #B8860B;
+  --color-bee-black: #1A1A1A;
+  --color-bee-dark: #2D2D2D;
+  --color-wax: #FFF8E1;
+  --color-hive: #3E2723;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background-color: #000000;
-  color: #fab005;
+  background-color: var(--color-wax);
+  color: var(--color-bee-black);
+  min-height: 100vh;
 }
 
 input, button {

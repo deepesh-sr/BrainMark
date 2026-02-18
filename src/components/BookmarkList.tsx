@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/utils/supabase"
 import { deleteBookmark } from "@/actions/bookmarks"
 import { motion, AnimatePresence, Reorder } from "framer-motion"
-import { ExternalLink, Trash2 } from "lucide-react"
+import { ExternalLink, Trash2, GripVertical } from "lucide-react"
 
 type Bookmark = {
   id: string
@@ -56,49 +56,42 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
   }, [userEmail])
 
   return (
-    <div>
-      <h2 style={{ color: '#fab005', fontSize: '1.2rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+    <div className="mt-8">
+      <h2 className="text-hive text-xl mb-6 font-bold">
         Stored Nectar
       </h2>
-      <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} style={{ listStyle: 'none', padding: 0 }}>
+      <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} className="space-y-3 p-0 list-none">
         <AnimatePresence>
           {bookmarks.map((bookmark) => (
             <Reorder.Item 
               key={bookmark.id} 
               value={bookmark}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              style={{ 
-                backgroundColor: '#111', 
-                border: '1px solid #333',
-                padding: '12px 16px', 
-                borderRadius: '12px',
-                marginBottom: '12px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                cursor: 'grab'
-              }}
-              whileDrag={{ scale: 1.05, boxShadow: '0 10px 20px rgba(250, 176, 5, 0.2)' }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white border border-honey-light p-4 px-5 rounded-xl flex justify-between items-center cursor-grab shadow-sm"
+              whileDrag={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.1)' }}
             >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <span style={{ fontWeight: 500, color: '#fab005' }}>{bookmark.title}</span>
-                <span style={{ fontSize: '0.8rem', color: '#666' }}>{new URL(bookmark.url).hostname}</span>
+              <div className="flex items-center gap-4 flex-1">
+                <GripVertical size={20} className="text-gray-300" />
+                <div className="flex flex-col">
+                  <span className="font-semibold text-bee-black text-base">{bookmark.title}</span>
+                  <span className="text-sm text-gray-400 truncate max-w-md">{bookmark.url}</span>
+                </div>
               </div>
               
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="flex gap-5 items-center">
                 <a 
                   href={bookmark.url} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  style={{ color: '#fab005' }}
+                  className="text-gold-dark flex items-center gap-1 no-underline text-sm font-medium hover:text-honey-dark transition-colors"
                 >
-                  <ExternalLink size={18} />
+                  Visit <ExternalLink size={16} />
                 </a>
                 <button 
                   onClick={() => deleteBookmark(bookmark.id)} 
-                  style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer', padding: 0 }}
+                  className="bg-transparent border-none text-red-500 cursor-pointer p-1 flex items-center hover:bg-red-50 rounded-full transition-colors"
                 >
                   <Trash2 size={18} />
                 </button>
@@ -108,7 +101,9 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
         </AnimatePresence>
       </Reorder.Group>
       {bookmarks.length === 0 && (
-        <p style={{ color: '#444', textAlign: 'center', marginTop: '2rem' }}>Empty Hive... add some links!</p>
+        <div className="p-12 text-center text-gray-400 border-2 border-dashed border-gray-100 rounded-2xl">
+          No nectar stored in this hive yet.
+        </div>
       )}
     </div>
   )
