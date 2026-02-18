@@ -67,9 +67,9 @@ export default function Page() {
         <div className="flex flex-col min-h-screen">
           <nav className="flex justify-between items-center py-4 px-8 md:px-20 bg-white border-b border-gray-100 sticky top-0 z-100">
             <div className="flex items-center gap-16">
-             
+              <h2 style={{ fontFamily: "'Pacifico', cursive" }} className="text-2xl text-honey-dark m-0 select-none">
                 BrainMark
-              
+              </h2>
 
               <a 
                 href="https://github.com/deepesh-sr/BrainMark" 
@@ -113,7 +113,7 @@ export default function Page() {
                 onClick={() => setActiveTab("view")}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full text-sm font-bold transition-colors relative z-10 ${activeTab === "view" ? 'text-bee-black' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <List size={18} /> Your Bookmarks
+                <List size={18} /> View Bookmarks
               </button>
             </div>
 
@@ -143,6 +143,12 @@ export default function Page() {
               </AnimatePresence>
             </div>
           </main>
+
+          <footer className="py-8 text-center border-t border-gray-100 bg-white/50">
+            <p className="text-gray-400 text-xs font-medium uppercase tracking-widest">
+              Built by Deepesh  • <a href="https://deepesh-sr.github.io/golden_retriever/" target="_blank" rel="noopener noreferrer" className="text-honey-dark hover:underline">Visit my portfolio</a>
+            </p>
+          </footer>
         </div>
       )}
     </div>
