@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/utils/supabase"
 import { deleteBookmark } from "@/actions/bookmarks"
-import { motion, AnimatePresence, Reorder } from "framer-motion"
-import { ExternalLink, Trash2, GripVertical } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { ExternalLink, Trash2 } from "lucide-react"
 
 type Bookmark = {
   id: string
@@ -92,20 +92,17 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
       <h2 className="text-gray-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4 md:mb-6">
         Stored Bookmark
       </h2>
-      <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} className="space-y-3 md:space-y-4 p-0 list-none">
-        <AnimatePresence>
+      <div className="space-y-3 md:space-y-4 p-0 list-none">
+        <AnimatePresence initial={false}>
           {bookmarks.map((bookmark) => (
-            <Reorder.Item 
+            <motion.div 
               key={bookmark.id} 
-              value={bookmark}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              className="bg-white border border-gray-100 p-4 md:p-5 rounded-xl flex justify-between items-center cursor-grab shadow-sm md:shadow-none md:hover:shadow-md transition-shadow group relative overflow-hidden"
-              whileDrag={{ scale: 1.01, boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}
+              exit={{ opacity: 0, x: -50 }}
+              className="bg-white border border-gray-100 p-4 md:p-5 rounded-xl flex justify-between items-center shadow-sm md:shadow-none md:hover:shadow-md transition-shadow group relative overflow-hidden"
             >
               <div className="flex items-center gap-3 md:gap-6 flex-1 min-w-0">
-                <GripVertical size={18} className="text-gray-200 group-hover:text-honey transition-colors shrink-0" />
                 <div className="flex flex-col min-w-0">
                   <span className="font-semibold text-gray-800 text-sm md:text-lg truncate">{bookmark.title}</span>
                   <span className="text-[10px] md:text-xs text-gray-400 font-mono truncate">{new URL(bookmark.url).hostname}</span>
@@ -128,10 +125,10 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
                   <Trash2 size={16} className="md:w-5 md:h-5" />
                 </button>
               </div>
-            </Reorder.Item>
+            </motion.div>
           ))}
         </AnimatePresence>
-      </Reorder.Group>
+      </div>
       {bookmarks.length === 0 && (
         <div className="p-20 text-center text-gray-400 border border-dashed border-gray-200 rounded-2xl bg-white/50">
           The hive is currently empty.
