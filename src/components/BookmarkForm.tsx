@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { addBookmark } from "@/actions/bookmarks"
 import { motion, AnimatePresence } from "framer-motion"
 import { Plus } from "lucide-react"
@@ -10,6 +10,15 @@ export default function BookmarkForm() {
   const [url, setUrl] = useState("")
   const [focused, setFocused] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,40 +44,40 @@ export default function BookmarkForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/40 z-40 backdrop-blur-[2px]"
+            className="fixed inset-0 bg-black/10 z-40 backdrop-blur-[1px]"
             onClick={() => setFocused(false)}
           />
         )}
       </AnimatePresence>
 
-      <div className="relative z-50 bg-white p-8 rounded-2xl shadow-sm border border-honey-light">
-        <h3 className="text-hive font-bold mb-6 border-b-2 border-honey inline-block">Build the Hive</h3>
+      <motion.div 
+        className="relative z-50 bg-white p-8 rounded-xl border border-gray-100 shadow-sm"
+      >
+        <h3 className="text-hive text-sm font-bold uppercase tracking-wider mb-6 opacity-70">Add New Bookmark</h3>
         <form 
           onSubmit={handleSubmit} 
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-4"
           onFocus={() => setFocused(true)}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <input 
-              placeholder="Bookmark Title" 
-              value={title} 
-              onChange={(e) => setTitle(e.target.value)} 
-              required 
-              className="p-3.5 rounded-lg border border-gray-200 bg-gray-50 text-bee-black outline-none focus:border-honey transition-colors"
-            />
-            <input 
-              placeholder="URL (https://...)" 
-              value={url} 
-              type="url"
-              onChange={(e) => setUrl(e.target.value)} 
-              required 
-              className="p-3.5 rounded-lg border border-gray-200 bg-gray-50 text-bee-black outline-none focus:border-honey transition-colors"
-            />
-          </div>
+          <input 
+            placeholder="Bookmark Title" 
+            value={title} 
+            onChange={(e) => setTitle(e.target.value)} 
+            required 
+            className="p-4 rounded-lg bg-gray-50/50 border border-gray-100 text-bee-black outline-none focus:bg-white focus:border-honey/30 transition-all"
+          />
+          <input 
+            placeholder="URL (https://...)" 
+            value={url} 
+            type="url"
+            onChange={(e) => setUrl(e.target.value)} 
+            required 
+            className="p-4 rounded-lg bg-gray-50/50 border border-gray-100 text-bee-black outline-none focus:bg-white focus:border-honey/30 transition-all"
+          />
           <button 
             type="submit" 
             disabled={isSubmitting}
-            className="p-3.5 rounded-lg bg-honey text-bee-black font-semibold cursor-pointer flex justify-center items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:hover:scale-100"
+            className="p-4 rounded-lg bg-honey text-bee-black font-semibold cursor-pointer flex justify-center items-center gap-2 hover:bg-honey-dark transition-all disabled:opacity-50"
           >
             {isSubmitting ? (
               <div className="flex gap-1">
@@ -82,11 +91,11 @@ export default function BookmarkForm() {
                 ))}
               </div>
             ) : (
-              <><Plus size={20} /> Add to Hive</>
+              <><Plus size={20} /> Add Bookmark</>
             )}
           </button>
         </form>
-      </div>
+      </motion.div>
     </>
   )
 }

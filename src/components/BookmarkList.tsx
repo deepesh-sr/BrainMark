@@ -15,6 +15,15 @@ type Bookmark = {
 
 export default function BookmarkList({ userEmail }: { userEmail: string }) {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -56,44 +65,44 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
   }, [userEmail])
 
   return (
-    <div className="mt-8">
-      <h2 className="text-hive text-xl mb-6 font-bold">
+    <div className="mt-12">
+      <h2 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-6">
         Stored Nectar
       </h2>
-      <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} className="space-y-3 p-0 list-none">
+      <Reorder.Group axis="y" values={bookmarks} onReorder={setBookmarks} className="space-y-4 p-0 list-none">
         <AnimatePresence>
           {bookmarks.map((bookmark) => (
             <Reorder.Item 
               key={bookmark.id} 
               value={bookmark}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white border border-honey-light p-4 px-5 rounded-xl flex justify-between items-center cursor-grab shadow-sm"
-              whileDrag={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.1)' }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              className="bg-white border border-gray-100 p-5 rounded-xl flex justify-between items-center cursor-grab shadow-sm md:shadow-none md:hover:shadow-md transition-shadow group relative overflow-hidden"
+              whileDrag={{ scale: 1.01, boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}
             >
-              <div className="flex items-center gap-4 flex-1">
-                <GripVertical size={20} className="text-gray-300" />
+              <div className="flex items-center gap-6 flex-1">
+                <GripVertical size={20} className="text-gray-200 group-hover:text-honey transition-colors" />
                 <div className="flex flex-col">
-                  <span className="font-semibold text-bee-black text-base">{bookmark.title}</span>
-                  <span className="text-sm text-gray-400 truncate max-w-md">{bookmark.url}</span>
+                  <span className="font-semibold text-gray-800 text-lg">{bookmark.title}</span>
+                  <span className="text-xs text-gray-400 font-mono truncate max-w-sm">{new URL(bookmark.url).hostname}</span>
                 </div>
               </div>
               
-              <div className="flex gap-5 items-center">
+              <div className="flex gap-6 items-center">
                 <a 
                   href={bookmark.url} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-gold-dark flex items-center gap-1 no-underline text-sm font-medium hover:text-honey-dark transition-colors"
+                  className="text-gray-400 flex items-center gap-1.5 no-underline text-sm font-semibold hover:text-honey transition-colors"
                 >
                   Visit <ExternalLink size={16} />
                 </a>
                 <button 
                   onClick={() => deleteBookmark(bookmark.id)} 
-                  className="bg-transparent border-none text-red-500 cursor-pointer p-1 flex items-center hover:bg-red-50 rounded-full transition-colors"
+                  className="bg-transparent border-none text-gray-200 cursor-pointer p-1 flex items-center hover:text-red-500 transition-colors"
                 >
-                  <Trash2 size={18} />
+                  <Trash2 size={20} />
                 </button>
               </div>
             </Reorder.Item>
@@ -101,8 +110,8 @@ export default function BookmarkList({ userEmail }: { userEmail: string }) {
         </AnimatePresence>
       </Reorder.Group>
       {bookmarks.length === 0 && (
-        <div className="p-12 text-center text-gray-400 border-2 border-dashed border-gray-100 rounded-2xl">
-          No nectar stored in this hive yet.
+        <div className="p-20 text-center text-gray-400 border border-dashed border-gray-200 rounded-2xl bg-white/50">
+          The hive is currently empty.
         </div>
       )}
     </div>
